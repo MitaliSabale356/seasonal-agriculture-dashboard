@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seasonal Agriculture Performance Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark">SA</span>
+          <div>
+            <p class="eyebrow">VOIS AICTE · Major Project</p>
+            <h1>Seasonal Agriculture</h1>
+          </div>
+        </div>
+        <p class="sidebar-copy">
+          Explore how yield, profit, climate and resource use change across Kharif, Rabi and Zaid.
+        </p>
+
+        <form id="filters" class="filters">
+          <label>
+            Season
+            <select id="season" multiple size="3"></select>
+            <small>Ctrl/Cmd-click to pick several</small>
+          </label>
+          <label>
+            State
+            <select id="state">
+              <option value="">All states</option>
+            </select>
+          </label>
+          <label>
+            Crop
+            <select id="crop">
+              <option value="">All crops</option>
+            </select>
+          </label>
+          <label>
+            Irrigation
+            <select id="irrigation">
+              <option value="">All methods</option>
+            </select>
+          </label>
+          <button type="button" id="reset" class="ghost">Reset filters</button>
+        </form>
+
+        <div class="legend-box">
+          <p>Season colours</p>
+          <ul>
+            <li><i class="dot kharif"></i> Kharif (monsoon)</li>
+            <li><i class="dot rabi"></i> Rabi (winter)</li>
+            <li><i class="dot zaid"></i> Zaid (summer)</li>
+          </ul>
+        </div>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <div>
+            <h2>Performance analysis dashboard</h2>
+            <p id="subtitle">Loading dataset…</p>
+          </div>
+          <div class="top-actions">
+            <span id="status" class="status">Preparing</span>
+            <a class="ghost" href="data/seasonal_agriculture_performance_dataset.csv" download>Download CSV</a>
+          </div>
+        </header>
+
+        <section class="kpis" id="kpis"></section>
+
+        <section class="grid">
+          <article class="card span-8">
+            <h3>Seasonal performance</h3>
+            <p>Average yield and mean farm profit by season (filtered view).</p>
+            <canvas id="seasonChart" role="img" aria-label="Yield and profit by season"></canvas>
+          </article>
+          <article class="card span-4">
+            <h3>Farm mix</h3>
+            <p>Share of records by season.</p>
+            <canvas id="mixChart" role="img" aria-label="Share of records by season"></canvas>
+          </article>
+
+          <article class="card span-6">
+            <h3>Climate by season</h3>
+            <p>Each axis is scaled so the highest season is 100. Hover for real values.</p>
+            <canvas id="climateChart" role="img" aria-label="Climate by season"></canvas>
+          </article>
+          <article class="card span-6">
+            <h3>Crop yield by season</h3>
+            <p>Mean tonnes per hectare. Sugarcane is on a much larger scale.</p>
+            <canvas id="cropChart" role="img" aria-label="Crop yield by season"></canvas>
+          </article>
+
+          <article class="card span-6">
+            <h3>Irrigation and yield</h3>
+            <p>Mean t/ha by method and season, excluding sugarcane.</p>
+            <canvas id="irrigationChart" role="img" aria-label="Yield by irrigation method"></canvas>
+          </article>
+          <article class="card span-6">
+            <h3>Economic outcome by state</h3>
+            <p>Mean profit (INR) for the current filters.</p>
+            <canvas id="stateChart" role="img" aria-label="Mean profit by state"></canvas>
+          </article>
+
+          <article class="card span-12">
+            <h3>Profit by crop</h3>
+            <p>Mean profit per farm (₹ lakh) for the current filters.</p>
+            <canvas id="cropProfitChart" role="img" aria-label="Mean profit by crop"></canvas>
+          </article>
+
+          <article class="card span-6">
+            <h3>Rainfall vs yield</h3>
+            <p>Sample of farms (capped at 500 points) in the filtered set.</p>
+            <canvas id="scatterChart" role="img" aria-label="Rainfall versus yield"></canvas>
+          </article>
+          <article class="card span-6">
+            <h3>Resource use</h3>
+            <p>Fertilizer, water use and pest/disease risk.</p>
+            <canvas id="resourceChart" role="img" aria-label="Resource use by season"></canvas>
+          </article>
+        </section>
+
+        <section class="card insights">
+          <h3>Evidence-based insights</h3>
+          <ul id="insights"></ul>
+        </section>
+
+        <section class="card table-card">
+          <div class="table-head">
+            <div>
+              <h3>Farm records</h3>
+              <p id="tableMeta"></p>
+            </div>
+            <input id="search" type="search" placeholder="Search farm, state, crop…" />
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Farm</th>
+                  <th>State</th>
+                  <th>Crop</th>
+                  <th>Season</th>
+                  <th>Area (ha)</th>
+                  <th>Yield (t/ha)</th>
+                  <th>Profit (INR)</th>
+                  <th>Rainfall</th>
+                  <th>Irrigation</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+          <div class="pager">
+            <button type="button" id="prevPage" class="ghost">Previous</button>
+            <span id="pageInfo"></span>
+            <button type="button" id="nextPage" class="ghost">Next</button>
+          </div>
+        </section>
+
+        <footer>
+          Synthetic dataset from the VOIS AICTE project. State and district pairings are not geographically accurate, so treat state-level results as illustrative.
+        </footer>
+      </main>
+    </div>
+    <script src="assets/dashboard.js"></script>
+  </body>
+</html>
