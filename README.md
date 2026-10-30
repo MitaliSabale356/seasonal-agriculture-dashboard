@@ -39,6 +39,6 @@ These insights are also calculated live from the filtered data inside the dashbo
 
 ## Run locally
 
-Do not open `index.html` as a file (`file://`), because the CSV is loaded with `fetch`.
--bash : python -m http.server 8000
+Do not open `index.html` as a file (`file://`), because the CSV is loaded with `fetch`.                       
+-bash : python -m http.server 8000                                    
 Then open <http://localhost:8000>.
