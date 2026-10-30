@@ -36,7 +36,10 @@ These insights are also calculated live from the filtered data inside the dashbo
 
 ## Tech stack
 
-HTML, CSS and vanilla JavaScript, with [Chart.js](https://www.chartjs.org/) for charts. The CSV is parsed in the browser, so there is no backend.
+- HTML
+- CSS 
+- Vanilla JavaScript, with [Chart.js](https://www.chartjs.org/) for charts. 
+The CSV is parsed in the browser, so there is no backend.
 
 ## Run locally
 
@@ -48,19 +51,6 @@ python -m http.server 8000
 
 Then open <http://localhost:8000>.
 
-## Publish on GitHub Pages
 
-1. Push this folder to a GitHub repository.
-2. Go to **Settings → Pages**.
-3. Source: **Deploy from a branch**. Branch: `main`, folder: `/ (root)`.
-4. Open `https://<your-username>.github.io/<repo-name>/`.
 
-## Project structure
 
-```
-index.html
-assets/styles.css
-assets/dashboard.js
-data/seasonal_agriculture_performance_dataset.csv
-.gitignore
-```
