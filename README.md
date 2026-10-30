@@ -1,6 +1,10 @@
-# Seasonal Agriculture Dashboard
+# Seasonal Agriculture Performance Dashboard
 
 An interactive dashboard that compares **Kharif, Rabi and Zaid** farming seasons on yield, profit, climate, irrigation and crop mix. Built for the VOIS AICTE major project, *Seasonal Agriculture Performance Analysis*.
+
+**Live demo:** `https://<your-username>.github.io/<repo-name>/`  <!-- replace after enabling GitHub Pages -->
+
+![Dashboard screenshot](docs/screenshot.png) <!-- add a screenshot at docs/screenshot.png -->
 
 ## Key findings
 
@@ -32,13 +36,31 @@ These insights are also calculated live from the filtered data inside the dashbo
 
 ## Tech stack
 
-- HTML
-- CSS 
-- Vanilla JavaScript with [Chart.js](https://www.chartjs.org/) for charts.
-
+HTML, CSS and vanilla JavaScript, with [Chart.js](https://www.chartjs.org/) for charts. The CSV is parsed in the browser, so there is no backend.
 
 ## Run locally
 
-Do not open `index.html` as a file (`file://`), because the CSV is loaded with `fetch`.                       
--bash : python -m http.server 8000                                    
+Do not open `index.html` as a file (`file://`), because the CSV is loaded with `fetch`.
+
+```bash
+python -m http.server 8000
+```
+
 Then open <http://localhost:8000>.
+
+## Publish on GitHub Pages
+
+1. Push this folder to a GitHub repository.
+2. Go to **Settings → Pages**.
+3. Source: **Deploy from a branch**. Branch: `main`, folder: `/ (root)`.
+4. Open `https://<your-username>.github.io/<repo-name>/`.
+
+## Project structure
+
+```
+index.html
+assets/styles.css
+assets/dashboard.js
+data/seasonal_agriculture_performance_dataset.csv
+.gitignore
+```
